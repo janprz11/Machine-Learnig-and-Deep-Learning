@@ -128,186 +128,186 @@ data_len_sas = np.shape(rodzaj_klasyfikacja_sas)[0]
 class_weight_sas = {0: 1/counts_sas[0]*(data_len_sas/2), 1:1/counts_sas[1]*(data_len_sas/2)}
 print(counts_sas)
 
-# #ANNs Chirp
+#ANNs Chirp
 
-# accuracies = {}
-# for variant in feats_ann.keys():
-#     feat = feats_ann[variant]
+accuracies = {}
+for variant in feats_ann.keys():
+    feat = feats_ann[variant]
 
-#     x_train, x_test, y_train, y_test = train_test_split(feat, np.asarray(rodzaj_klasyfikacja), test_size=0.3, stratify=rodzaj_klasyfikacja, random_state=random_state)
+    x_train, x_test, y_train, y_test = train_test_split(feat, np.asarray(rodzaj_klasyfikacja), test_size=0.3, stratify=rodzaj_klasyfikacja, random_state=random_state)
     
-#     model_ANN = make_model_ANN(input_shape=np.shape(x_train)[1])
-#     model_ANN.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    model_ANN = make_model_ANN(input_shape=np.shape(x_train)[1])
+    model_ANN.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-#     history = model_ANN.fit(x_train, y_train, epochs=100, batch_size=32, validation_split=0.3, class_weight=class_weight)
-#     accuracies[variant] = make_plots_history(model_ANN, "chirp", x_test, y_test, history, f"ANN_{variant}")
+    history = model_ANN.fit(x_train, y_train, epochs=100, batch_size=32, validation_split=0.3, class_weight=class_weight)
+    accuracies[variant] = make_plots_history(model_ANN, "chirp", x_test, y_test, history, f"ANN_{variant}")
 
-# # # K-FOLD VALIDATE ANNs chirp
+# # K-FOLD VALIDATE ANNs chirp
    
-# print("K-FOLD VALIDATING ANNs chirp")
-# for variant in feats_ann.keys():
-#     print(f"{variant} chirp")
-#     kfold = KFold(n_splits=5, shuffle=True)
-#     acc_per_fold = []
-#     loss_per_fold = []
+print("K-FOLD VALIDATING ANNs chirp")
+for variant in feats_ann.keys():
+    print(f"{variant} chirp")
+    kfold = KFold(n_splits=5, shuffle=True)
+    acc_per_fold = []
+    loss_per_fold = []
 
-#     fold_no = 1
-#     feat = feats_ann[variant]
-#     for train, test in kfold.split(feat, np.asarray(rodzaj_klasyfikacja)):
-#         x_train = feat[train]
-#         x_test = feat[test]
-#         y_train = np.asarray(rodzaj_klasyfikacja)[train]
-#         y_test = np.asarray(rodzaj_klasyfikacja)[test]
+    fold_no = 1
+    feat = feats_ann[variant]
+    for train, test in kfold.split(feat, np.asarray(rodzaj_klasyfikacja)):
+        x_train = feat[train]
+        x_test = feat[test]
+        y_train = np.asarray(rodzaj_klasyfikacja)[train]
+        y_test = np.asarray(rodzaj_klasyfikacja)[test]
 
-#         model_temp = make_model_ANN(input_shape=np.shape(x_train)[1])
-#         model_temp.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-#         history = model_temp.fit(x_train, y_train, epochs=100, batch_size=32, validation_split=0.3, class_weight=class_weight, verbose=0)
-#         scores = model_temp.evaluate(x_test, y_test, verbose=0)
-#         print(f'Score for fold {fold_no}: {model_temp.metrics_names[0]} of {scores[0]}; {model_temp.metrics_names[1]} of {scores[1]*100}%')
-#         acc_per_fold.append(scores[1] * 100)
-#         loss_per_fold.append(scores[0])
+        model_temp = make_model_ANN(input_shape=np.shape(x_train)[1])
+        model_temp.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+        history = model_temp.fit(x_train, y_train, epochs=100, batch_size=32, validation_split=0.3, class_weight=class_weight, verbose=0)
+        scores = model_temp.evaluate(x_test, y_test, verbose=0)
+        print(f'Score for fold {fold_no}: {model_temp.metrics_names[0]} of {scores[0]}; {model_temp.metrics_names[1]} of {scores[1]*100}%')
+        acc_per_fold.append(scores[1] * 100)
+        loss_per_fold.append(scores[0])
 
-#         # Increase fold number
-#         fold_no = fold_no + 1
-#     export_data_to_excel(loss_per_fold, "chirp", acc_per_fold, variant)
+        # Increase fold number
+        fold_no = fold_no + 1
+    export_data_to_excel(loss_per_fold, "chirp", acc_per_fold, variant)
 
 
-# #ANNs SAS
+#ANNs SAS
 
-# accuracies = {}
-# for variant in feats_ann_sas.keys():
-#     feat = feats_ann_sas[variant]
+accuracies = {}
+for variant in feats_ann_sas.keys():
+    feat = feats_ann_sas[variant]
 
-#     x_train, x_test, y_train, y_test = train_test_split(feat, np.asarray(rodzaj_klasyfikacja_sas), test_size=0.3, stratify=rodzaj_klasyfikacja_sas, random_state=random_state)
+    x_train, x_test, y_train, y_test = train_test_split(feat, np.asarray(rodzaj_klasyfikacja_sas), test_size=0.3, stratify=rodzaj_klasyfikacja_sas, random_state=random_state)
     
-#     model_ANN = make_model_ANN(input_shape=np.shape(x_train)[1])
-#     model_ANN.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    model_ANN = make_model_ANN(input_shape=np.shape(x_train)[1])
+    model_ANN.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-#     history = model_ANN.fit(x_train, y_train, epochs=100, batch_size=32, validation_split=0.3, class_weight=class_weight_sas)
-#     accuracies[variant] = make_plots_history(model_ANN, "sas", x_test, y_test, history, f"ANN_{variant}")
+    history = model_ANN.fit(x_train, y_train, epochs=100, batch_size=32, validation_split=0.3, class_weight=class_weight_sas)
+    accuracies[variant] = make_plots_history(model_ANN, "sas", x_test, y_test, history, f"ANN_{variant}")
 
-# # # K-FOLD VALIDATE ANNs SAS
+# # K-FOLD VALIDATE ANNs SAS
    
-# print("K-FOLD VALIDATING ANNs SAS")
-# for variant in feats_ann_sas.keys():
-#     print(f"{variant} sas")
-#     kfold = KFold(n_splits=5, shuffle=True)
-#     acc_per_fold = []
-#     loss_per_fold = []
+print("K-FOLD VALIDATING ANNs SAS")
+for variant in feats_ann_sas.keys():
+    print(f"{variant} sas")
+    kfold = KFold(n_splits=5, shuffle=True)
+    acc_per_fold = []
+    loss_per_fold = []
 
-#     fold_no = 1
-#     feat = feats_ann_sas[variant]
-#     for train, test in kfold.split(feat, np.asarray(rodzaj_klasyfikacja_sas)):
-#         x_train = feat[train]
-#         x_test = feat[test]
-#         y_train = np.asarray(rodzaj_klasyfikacja_sas)[train]
-#         y_test = np.asarray(rodzaj_klasyfikacja_sas)[test]
+    fold_no = 1
+    feat = feats_ann_sas[variant]
+    for train, test in kfold.split(feat, np.asarray(rodzaj_klasyfikacja_sas)):
+        x_train = feat[train]
+        x_test = feat[test]
+        y_train = np.asarray(rodzaj_klasyfikacja_sas)[train]
+        y_test = np.asarray(rodzaj_klasyfikacja_sas)[test]
 
-#         model_temp = make_model_ANN(input_shape=np.shape(x_train)[1])
-#         model_temp.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-#         history = model_temp.fit(x_train, y_train, epochs=100, batch_size=32, validation_split=0.3, class_weight=class_weight_sas, verbose=0)
-#         scores = model_temp.evaluate(x_test, y_test, verbose=0)
-#         print(f'Score for fold {fold_no}: {model_temp.metrics_names[0]} of {scores[0]}; {model_temp.metrics_names[1]} of {scores[1]*100}%')
-#         acc_per_fold.append(scores[1] * 100)
-#         loss_per_fold.append(scores[0])
+        model_temp = make_model_ANN(input_shape=np.shape(x_train)[1])
+        model_temp.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+        history = model_temp.fit(x_train, y_train, epochs=100, batch_size=32, validation_split=0.3, class_weight=class_weight_sas, verbose=0)
+        scores = model_temp.evaluate(x_test, y_test, verbose=0)
+        print(f'Score for fold {fold_no}: {model_temp.metrics_names[0]} of {scores[0]}; {model_temp.metrics_names[1]} of {scores[1]*100}%')
+        acc_per_fold.append(scores[1] * 100)
+        loss_per_fold.append(scores[0])
 
-#         # Increase fold number
-#         fold_no = fold_no + 1
-#     export_data_to_excel(loss_per_fold, "sas", acc_per_fold, variant)
+        # Increase fold number
+        fold_no = fold_no + 1
+    export_data_to_excel(loss_per_fold, "sas", acc_per_fold, variant)
 
-# CNNs chirp
+CNNs chirp
 
-# accuracies={}
-# for variant in feats_cnn.keys():
-#     feat = feats_cnn[variant]
+accuracies={}
+for variant in feats_cnn.keys():
+    feat = feats_cnn[variant]
 
-#     x_train, x_test, y_train, y_test = train_test_split(feat, np.asarray(rodzaj_klasyfikacja), test_size=0.3, stratify=rodzaj_klasyfikacja, random_state=random_state)
-#     x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 1)
-#     x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
+    x_train, x_test, y_train, y_test = train_test_split(feat, np.asarray(rodzaj_klasyfikacja), test_size=0.3, stratify=rodzaj_klasyfikacja, random_state=random_state)
+    x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 1)
+    x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
 
 
-#     model_CNN = make_model_CNN(x_train.shape[1], x_train.shape[2])
-#     model_CNN.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    model_CNN = make_model_CNN(x_train.shape[1], x_train.shape[2])
+    model_CNN.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-#     history = model_CNN.fit(x_train, y_train, epochs=15, batch_size=32, validation_split=0.3, class_weight=class_weight)
-#     accuracies[variant] = make_plots_history(model_CNN, "chirp", x_test, y_test, history, f"CNN_{variant}")
+    history = model_CNN.fit(x_train, y_train, epochs=15, batch_size=32, validation_split=0.3, class_weight=class_weight)
+    accuracies[variant] = make_plots_history(model_CNN, "chirp", x_test, y_test, history, f"CNN_{variant}")
     
-# print("K-FOLD VALIDATING CNNs chirp")
-# for variant in feats_cnn.keys():
-#     print(variant)
-#     kfold = KFold(n_splits=5, shuffle=True)
-#     acc_per_fold = []
-#     loss_per_fold = []
+print("K-FOLD VALIDATING CNNs chirp")
+for variant in feats_cnn.keys():
+    print(variant)
+    kfold = KFold(n_splits=5, shuffle=True)
+    acc_per_fold = []
+    loss_per_fold = []
 
-#     fold_no = 1
-#     feat = feats_cnn[variant]
-#     for train, test in kfold.split(feat, np.asarray(rodzaj_klasyfikacja)):
-#         x_train = feat[train]
-#         x_test = feat[test]
-#         x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 1)
-#         x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
+    fold_no = 1
+    feat = feats_cnn[variant]
+    for train, test in kfold.split(feat, np.asarray(rodzaj_klasyfikacja)):
+        x_train = feat[train]
+        x_test = feat[test]
+        x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 1)
+        x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
 
-#         y_train = np.asarray(rodzaj_klasyfikacja)[train]
-#         y_test = np.asarray(rodzaj_klasyfikacja)[test]
+        y_train = np.asarray(rodzaj_klasyfikacja)[train]
+        y_test = np.asarray(rodzaj_klasyfikacja)[test]
 
-#         model_temp = make_model_CNN(x_train.shape[1], x_train.shape[2])
-#         model_temp.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-#         history = model_temp.fit(x_train, y_train, epochs=15, batch_size=4, validation_split=0.3, class_weight=class_weight, verbose=0)
-#         scores = model_temp.evaluate(x_test, y_test, verbose=0)
-#         print(f'Score for fold {fold_no}: {model_temp.metrics_names[0]} of {scores[0]}; {model_temp.metrics_names[1]} of {scores[1]*100}%')
-#         acc_per_fold.append(scores[1] * 100)
-#         loss_per_fold.append(scores[0])
+        model_temp = make_model_CNN(x_train.shape[1], x_train.shape[2])
+        model_temp.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+        history = model_temp.fit(x_train, y_train, epochs=15, batch_size=4, validation_split=0.3, class_weight=class_weight, verbose=0)
+        scores = model_temp.evaluate(x_test, y_test, verbose=0)
+        print(f'Score for fold {fold_no}: {model_temp.metrics_names[0]} of {scores[0]}; {model_temp.metrics_names[1]} of {scores[1]*100}%')
+        acc_per_fold.append(scores[1] * 100)
+        loss_per_fold.append(scores[0])
 
-#         # Increase fold number
-#         fold_no = fold_no + 1
-#     export_data_to_excel(loss_per_fold, "chirp", acc_per_fold, variant)
+        # Increase fold number
+        fold_no = fold_no + 1
+    export_data_to_excel(loss_per_fold, "chirp", acc_per_fold, variant)
 
-## CNNs sas
+# CNNs sas
 
-# accuracies={}
-# for variant in feats_cnn_sas.keys():
-#     feat = feats_cnn_sas[variant]
+accuracies={}
+for variant in feats_cnn_sas.keys():
+    feat = feats_cnn_sas[variant]
 
-#     x_train, x_test, y_train, y_test = train_test_split(feat, np.asarray(rodzaj_klasyfikacja_sas), test_size=0.3, stratify=rodzaj_klasyfikacja_sas, random_state=random_state)
-#     x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 1)
-#     x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
+    x_train, x_test, y_train, y_test = train_test_split(feat, np.asarray(rodzaj_klasyfikacja_sas), test_size=0.3, stratify=rodzaj_klasyfikacja_sas, random_state=random_state)
+    x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 1)
+    x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
 
 
-#     model_CNN = make_model_CNN(x_train.shape[1], x_train.shape[2])
-#     model_CNN.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    model_CNN = make_model_CNN(x_train.shape[1], x_train.shape[2])
+    model_CNN.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-#     history = model_CNN.fit(x_train, y_train, epochs=15, batch_size=32, validation_split=0.3, class_weight=class_weight_sas)
-#     accuracies[variant] = make_plots_history(model_CNN, "chirp", x_test, y_test, history, f"CNN_{variant}")
+    history = model_CNN.fit(x_train, y_train, epochs=15, batch_size=32, validation_split=0.3, class_weight=class_weight_sas)
+    accuracies[variant] = make_plots_history(model_CNN, "chirp", x_test, y_test, history, f"CNN_{variant}")
     
-# print("K-FOLD VALIDATING CNNs chirp")
-# for variant in feats_cnn_sas.keys():
-#     print(variant)
-#     kfold = KFold(n_splits=5, shuffle=True)
-#     acc_per_fold = []
-#     loss_per_fold = []
+print("K-FOLD VALIDATING CNNs chirp")
+for variant in feats_cnn_sas.keys():
+    print(variant)
+    kfold = KFold(n_splits=5, shuffle=True)
+    acc_per_fold = []
+    loss_per_fold = []
 
-#     fold_no = 1
-#     feat = feats_cnn_sas[variant]
-#     for train, test in kfold.split(feat, np.asarray(rodzaj_klasyfikacja_sas)):
-#         x_train = feat[train]
-#         x_test = feat[test]
-#         x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 1)
-#         x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
+    fold_no = 1
+    feat = feats_cnn_sas[variant]
+    for train, test in kfold.split(feat, np.asarray(rodzaj_klasyfikacja_sas)):
+        x_train = feat[train]
+        x_test = feat[test]
+        x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 1)
+        x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
 
-#         y_train = np.asarray(rodzaj_klasyfikacja)[train]
-#         y_test = np.asarray(rodzaj_klasyfikacja)[test]
+        y_train = np.asarray(rodzaj_klasyfikacja)[train]
+        y_test = np.asarray(rodzaj_klasyfikacja)[test]
 
-#         model_temp = make_model_CNN(x_train.shape[1], x_train.shape[2])
-#         model_temp.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-#         history = model_temp.fit(x_train, y_train, epochs=15, batch_size=4, validation_split=0.3, class_weight=class_weight_sas, verbose=0)
-#         scores = model_temp.evaluate(x_test, y_test, verbose=0)
-#         print(f'Score for fold {fold_no}: {model_temp.metrics_names[0]} of {scores[0]}; {model_temp.metrics_names[1]} of {scores[1]*100}%')
-#         acc_per_fold.append(scores[1] * 100)
-#         loss_per_fold.append(scores[0])
+        model_temp = make_model_CNN(x_train.shape[1], x_train.shape[2])
+        model_temp.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+        history = model_temp.fit(x_train, y_train, epochs=15, batch_size=4, validation_split=0.3, class_weight=class_weight_sas, verbose=0)
+        scores = model_temp.evaluate(x_test, y_test, verbose=0)
+        print(f'Score for fold {fold_no}: {model_temp.metrics_names[0]} of {scores[0]}; {model_temp.metrics_names[1]} of {scores[1]*100}%')
+        acc_per_fold.append(scores[1] * 100)
+        loss_per_fold.append(scores[0])
 
-#         # Increase fold number
-#         fold_no = fold_no + 1
-#     export_data_to_excel(loss_per_fold, "sas", acc_per_fold, variant)
+        # Increase fold number
+        fold_no = fold_no + 1
+    export_data_to_excel(loss_per_fold, "sas", acc_per_fold, variant)
 
 
 # PCA FOR ANNs chirp
